@@ -32,7 +32,7 @@ extension View {
 }
 
 struct ContentView: View {
-    var playOptions = ["🪨", "📃", "✂️"]
+    var playOptions = ["🪨", "📃", "✂️", "🦎", "🖖"]
     @State var playerChoice = ""
     @State var computerChoice = ""
     @State var playerScore = 0
@@ -61,37 +61,28 @@ struct ContentView: View {
                 Text("")
                     .title(with: "Make your choice:")
                 HStack {
-                    Button("🪨") {
-                        playerChoice = "🪨"
-                        computerChoice = playOptions.randomElement() ?? "Rock"
-                        playRound(playerChoice)
+                    ForEach(playOptions, id: \.self) { option in
+                        Button {
+                            playerChoice = option
+                            computerChoice = playOptions.randomElement() ?? "Rock"
+                            playRound()
+                        } label: {
+                            Text(option)
+                        }
+                        .font(.system(size: 60))
                     }
-                    .font(.system(size: 60))
-                    Button("📃") {
-                        playerChoice = "📃"
-                        computerChoice = playOptions.randomElement() ?? "Rock"
-                        playRound(playerChoice)
-                    }
-                    .font(.system(size: 60))
-                    Button("✂️") {
-                        playerChoice = "✂️"
-                        computerChoice = playOptions.randomElement() ?? "Rock"
-                        playRound(playerChoice)
-                    }
-                    .font(.system(size: 60))
                 }
-                Spacer()
-                Text("")
-                    .title(with: "Computer's choice:")
-                Text(computerChoice)
-                    .font(.system(size: 60))
-                Spacer()
+                    Spacer()
+                    Text("")
+                        .title(with: "Computer's choice:")
+                    Text(computerChoice)
+                        .font(.system(size: 60))
+                    Spacer()
+                }
             }
-        }
-        
     }
     
-    func playRound(_ playerChoice: String) {
+    func playRound() {
         if playerScore == 10 || computerScore == 10 {
             displayWinner()
         }
@@ -100,16 +91,46 @@ struct ContentView: View {
             playerScore += 1
         } else if playerChoice == "🪨" && computerChoice == "📃" {
             computerScore += 1
+        } else if playerChoice == "🪨" && computerChoice == "🦎" {
+            playerScore += 1
+        } else if playerChoice == "🪨" && computerChoice == "🖖" {
+            computerScore += 1
         } else if playerChoice == "📃" && computerChoice == "🪨" {
             playerScore += 1
         } else if playerChoice == "📃" && computerChoice == "✂️" {
             computerScore += 1
+        } else if playerChoice == "📃" && computerChoice == "🦎" {
+            computerScore += 1
+        } else if playerChoice == "📃" && computerChoice == "🖖" {
+            playerScore += 1
         } else if playerChoice == "✂️" && computerChoice == "📃" {
             playerScore += 1
         } else if playerChoice == "✂️" && computerChoice == "🪨" {
             computerScore += 1
+        } else if playerChoice == "✂️" && computerChoice == "🦎" {
+            playerScore += 1
+        } else if playerChoice == "✂️" && computerChoice == "🖖" {
+            computerScore += 1
+        } else if playerChoice == "🦎" && computerChoice == "🪨" {
+            computerScore += 1
+        } else if playerChoice == "🦎" && computerChoice == "📃" {
+            playerScore += 1
+        } else if playerChoice == "🦎" && computerChoice == "✂️" {
+            playerScore += 1
+        } else if playerChoice == "🦎" && computerChoice == "🖖" {
+            playerScore += 1
+        } else if playerChoice == "🖖" && computerChoice == "🪨" {
+            playerScore += 1
+        } else if playerChoice == "🖖" && computerChoice == "📃" {
+            computerScore += 1
+        } else if playerChoice == "🖖" && computerChoice == "✂️" {
+            playerScore += 1
+        } else if playerChoice == "🖖" && computerChoice == "🦎" {
+            computerScore += 1
         }
         
+                    
+        ["🪨", "📃", "✂️", "🦎", "🖖"]
         round += 1
     }
     
