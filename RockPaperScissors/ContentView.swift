@@ -35,8 +35,11 @@ struct ContentView: View {
     var playOptions = ["🪨", "📃", "✂️"]
     @State var playerChoice = ""
     @State var computerChoice = ""
-    @State var score = 0
-    @State var currentQuestion = 0
+    @State var playerScore = 0
+    @State var computerScore = 0
+    @State var round = 0
+    @State var resultMessage = ""
+    @State private var showResultAlert = false
     
     
     var body: some View {
@@ -45,40 +48,81 @@ struct ContentView: View {
                 .ignoresSafeArea()
             VStack {
                 Text("")
-                    .title(with: "Score: 0")
+                    .title(with: "Your score: \(playerScore)")
+                    .alert(resultMessage, isPresented: $showResultAlert) {
+                        Button("Try again!") {
+                            playerScore = 0
+                            computerScore = 0
+                        }
+                    }
+                Text("")
+                    .title(with: "Computer score: \(computerScore)")
                 Spacer()
                 Text("")
                     .title(with: "Make your choice:")
                 HStack {
                     Button("🪨") {
-                        playerChoice = "Rock"
-                        playRound()
+                        playerChoice = "🪨"
+                        computerChoice = playOptions.randomElement() ?? "Rock"
+                        playRound(playerChoice)
                     }
                     .font(.system(size: 60))
                     Button("📃") {
-                        playerChoice = "Paper"
-                        playRound()
+                        playerChoice = "📃"
+                        computerChoice = playOptions.randomElement() ?? "Rock"
+                        playRound(playerChoice)
                     }
                     .font(.system(size: 60))
                     Button("✂️") {
-                        playerChoice = "Scissors"
-                        playRound()
+                        playerChoice = "✂️"
+                        computerChoice = playOptions.randomElement() ?? "Rock"
+                        playRound(playerChoice)
                     }
                     .font(.system(size: 60))
                 }
                 Spacer()
                 Text("")
                     .title(with: "Computer's choice:")
+                Text(computerChoice)
+                    .font(.system(size: 60))
                 Spacer()
             }
         }
         
     }
     
-    func playRound() {
-        // compare who won
-        // increase round by 1
-        // increase player score by 1 if they won
+    func playRound(_ playerChoice: String) {
+        if playerScore == 10 || computerScore == 10 {
+            displayWinner()
+        }
+        
+        if playerChoice == "🪨" && computerChoice == "✂️" {
+            playerScore += 1
+        } else if playerChoice == "🪨" && computerChoice == "📃" {
+            computerScore += 1
+        } else if playerChoice == "📃" && computerChoice == "🪨" {
+            playerScore += 1
+        } else if playerChoice == "📃" && computerChoice == "✂️" {
+            computerScore += 1
+        } else if playerChoice == "✂️" && computerChoice == "📃" {
+            playerScore += 1
+        } else if playerChoice == "✂️" && computerChoice == "🪨" {
+            computerScore += 1
+        }
+        
+        round += 1
+    }
+    
+    func displayWinner() {
+        showResultAlert = true
+        
+        if playerScore > computerScore {
+            resultMessage = "You won!"
+        } else {
+            resultMessage = "You lost! Try again!"
+        }
+        
+        
     }
 }
 
